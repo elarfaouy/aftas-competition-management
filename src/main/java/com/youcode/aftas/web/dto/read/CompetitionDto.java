@@ -1,14 +1,19 @@
 package com.youcode.aftas.web.dto.read;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record CompetitionDto(
-        String code,
-        LocalDate date,
-        LocalTime startTime,
-        LocalTime endTime,
-        String location,
-        Double amount) implements Serializable {
+@Getter
+@Setter
+public class CompetitionDto implements Serializable {
+    private String code;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private String location;
+    private Double amount;
 }

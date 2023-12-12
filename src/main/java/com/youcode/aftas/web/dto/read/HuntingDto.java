@@ -1,14 +1,16 @@
 package com.youcode.aftas.web.dto.read;
 
-import com.youcode.aftas.domain.entity.Competition;
-import com.youcode.aftas.domain.entity.Member;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-public record HuntingDto(
-        Integer id,
-        Integer numberOfFish,
-        FishDto fish,
-        MemberDto member,
-        CompetitionDto competition) implements Serializable {
+@Getter
+@Setter
+public class HuntingDto implements Serializable {
+    private Integer id;
+    private Integer numberOfFish;
+    private FishDto fish;
+    private MemberDto member;
+    private CompetitionDto competition;
 }

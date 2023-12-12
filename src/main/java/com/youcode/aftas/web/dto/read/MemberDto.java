@@ -1,16 +1,20 @@
 package com.youcode.aftas.web.dto.read;
 
 import com.youcode.aftas.domain.enums.IdentityDocumentType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public record MemberDto(
-        Integer num,
-        String name,
-        String familyName,
-        LocalDate accessionDate,
-        String nationality,
-        String identityNumber,
-        IdentityDocumentType identityDocument) implements Serializable {
+@Getter
+@Setter
+public class MemberDto implements Serializable {
+    private Integer num;
+    private String name;
+    private String familyName;
+    private LocalDate accessionDate;
+    private String nationality;
+    private String identityNumber;
+    private IdentityDocumentType identityDocument;
 }
