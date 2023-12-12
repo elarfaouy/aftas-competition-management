@@ -9,7 +9,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 import java.io.Serializable;
 
-public record HuntingDto(
+public record UpdateHuntingDto(
         @NotNull(message = "id cannot be null.") @Positive(message = "id cannot be negative.") Integer id,
         @NotNull(message = "number of fish cannot be null.") @PositiveOrZero(message = "number of fish cannot be negative.") Integer numberOfFish,
         @NotNull(message = "fish cannot be null.") StoreFishDto fish,

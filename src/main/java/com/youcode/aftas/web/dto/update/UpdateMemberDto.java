@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public record MemberDto(
+public record UpdateMemberDto(
         @NotNull(message = "num cannot be null.") @Positive(message = "num cannot be negative.") Integer num,
         @NotNull(message = "name cannot be null.") @NotBlank(message = "name cannot be blank.") String name,
         @NotNull(message = "family name cannot be null.") @NotBlank(message = "family name cannot be blank.") String familyName,
