@@ -1,5 +1,6 @@
 package com.youcode.aftas.web.dto.read;
 
+import com.youcode.aftas.domain.enums.CompetitionStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,4 +17,5 @@ public class CompetitionDto implements Serializable {
     private LocalTime endTime;
     private String location;
     private Double amount;
+    private CompetitionStatus status;
 }

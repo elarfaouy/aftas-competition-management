@@ -1,6 +1,7 @@
 package com.youcode.aftas.service.imp;
 
 import com.youcode.aftas.domain.entity.Competition;
+import com.youcode.aftas.domain.enums.CompetitionStatus;
 import com.youcode.aftas.exception.LogicValidationException;
 import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
 import org.modelmapper.ModelMapper;
@@ -8,10 +9,12 @@ import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.service.ICompetitionService;
 import com.youcode.aftas.web.dto.read.CompetitionDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +30,11 @@ public class CompetitionService implements ICompetitionService {
         return repository
                 .findAll()
                 .stream()
-                .map((element) -> mapper.map(element, CompetitionDto.class))
+                .map((element) -> {
+                    CompetitionDto competitionDto = mapper.map(element, CompetitionDto.class);
+                    competitionDto.setStatus(calculateCompetitionStatus(element.getDate(), element.getStartTime(), element.getEndTime()));
+                    return competitionDto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -61,5 +68,18 @@ public class CompetitionService implements ICompetitionService {
 
         String formattedCode = formattedLocation + "-" + formattedDate;
         return code.equals(formattedCode);
+    }
+
+    private CompetitionStatus calculateCompetitionStatus(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        LocalDate now = LocalDate.now();
+        LocalTime timeNow = LocalTime.now();
+
+        if (now.isAfter(date) || (now.isEqual(date) && timeNow.isAfter(endTime))) {
+            return CompetitionStatus.COMPLETED;
+        } else if (now.isBefore(date) || (now.isEqual(date) && timeNow.isBefore(startTime))) {
+            return CompetitionStatus.UPCOMING;
+        } else {
+            return CompetitionStatus.ONGOING;
+        }
     }
 }
