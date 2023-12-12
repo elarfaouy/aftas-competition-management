@@ -1,4 +1,4 @@
-package com.youcode.aftas.web.dto;
+package com.youcode.aftas.web.dto.store;
 
 import jakarta.validation.constraints.*;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record CompetitionDto(
+public record StoreCompetitionDto(
         @NotNull(message = "code cannot be null.") @NotBlank(message = "code cannot be blank.") String code,
         @NotNull(message = "date cannot be null.") @Future(message = "date cannot be in past.") LocalDate date,
         @NotNull(message = "start time cannot be null.") @FutureOrPresent(message = "start time cannot be past.") LocalTime startTime,

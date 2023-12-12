@@ -3,7 +3,6 @@ package com.youcode.aftas.domain.entity;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 

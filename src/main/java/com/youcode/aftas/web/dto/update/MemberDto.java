@@ -1,4 +1,4 @@
-package com.youcode.aftas.web.dto;
+package com.youcode.aftas.web.dto.update;
 
 import com.youcode.aftas.domain.enums.IdentityDocumentType;
 import jakarta.validation.constraints.NotBlank;
