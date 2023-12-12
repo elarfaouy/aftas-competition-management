@@ -11,4 +11,10 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.badRequest()
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler(DataBaseConstraintException.class)
+    public ResponseEntity<Object> handleCustomValidationException(DataBaseConstraintException ex) {
+        return ResponseEntity.badRequest()
+                .body(ex.getMessage());
+    }
 }
