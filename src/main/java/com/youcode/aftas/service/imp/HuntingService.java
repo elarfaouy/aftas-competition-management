@@ -1,16 +1,10 @@
 package com.youcode.aftas.service.imp;
 
-import com.youcode.aftas.domain.entity.Competition;
-import com.youcode.aftas.domain.entity.Fish;
-import com.youcode.aftas.domain.entity.Hunting;
-import com.youcode.aftas.domain.entity.Member;
+import com.youcode.aftas.domain.entity.*;
 import com.youcode.aftas.domain.enums.CompetitionStatus;
 import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.exception.LogicValidationException;
-import com.youcode.aftas.repository.CompetitionRepository;
-import com.youcode.aftas.repository.FishRepository;
-import com.youcode.aftas.repository.HuntingRepository;
-import com.youcode.aftas.repository.MemberRepository;
+import com.youcode.aftas.repository.*;
 import com.youcode.aftas.service.ICompetitionService;
 import com.youcode.aftas.service.IHuntingService;
 import com.youcode.aftas.web.dto.read.CompetitionDto;
@@ -29,6 +23,7 @@ public class HuntingService implements IHuntingService {
     private final CompetitionRepository competitionRepository;
     private final MemberRepository memberRepository;
     private final FishRepository fishRepository;
+    private final RankingRepository rankingRepository;
     private final ModelMapper mapper;
 
     private final ICompetitionService competitionService;
@@ -55,6 +50,11 @@ public class HuntingService implements IHuntingService {
         }
 
         Hunting hunting = mapper.map(storeHuntingDto, Hunting.class);
+
+        Optional<Ranking> optionalRanking = rankingRepository.findById(new RankingKey(hunting.getCompetition().getCode(), hunting.getMember().getNum()));
+        if (optionalRanking.isEmpty()){
+            throw new LogicValidationException("you are not registered to this competition.");
+        }
 
         Optional<CompetitionDto> competitionDto = competitionService.findOne(hunting.getCompetition().getCode());
         if (!(competitionDto.isPresent() && competitionDto.get().getStatus().equals(CompetitionStatus.ONGOING))) {
