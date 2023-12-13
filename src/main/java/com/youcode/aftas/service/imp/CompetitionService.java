@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,6 +37,16 @@ public class CompetitionService implements ICompetitionService {
                     return competitionDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<CompetitionDto> findOne(String code) {
+        Optional<Competition> optional = repository.findById(code);
+        return optional.map(element -> {
+            CompetitionDto competitionDto = mapper.map(element, CompetitionDto.class);
+            competitionDto.setStatus(calculateCompetitionStatus(element.getDate(), element.getStartTime(), element.getEndTime()));
+            return competitionDto;
+        });
     }
 
     @Override

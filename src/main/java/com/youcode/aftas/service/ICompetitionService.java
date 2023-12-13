@@ -5,10 +5,13 @@ import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface ICompetitionService {
     List<CompetitionDto> findAll();
+
+    Optional<CompetitionDto> findOne(String code);
 
     CompetitionDto store(StoreCompetitionDto storeCompetitionDto);
 }
