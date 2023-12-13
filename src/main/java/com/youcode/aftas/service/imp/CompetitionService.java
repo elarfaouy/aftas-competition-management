@@ -1,28 +1,37 @@
 package com.youcode.aftas.service.imp;
 
 import com.youcode.aftas.domain.entity.Competition;
+import com.youcode.aftas.domain.entity.Hunting;
+import com.youcode.aftas.domain.entity.Ranking;
 import com.youcode.aftas.domain.enums.CompetitionStatus;
+import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.exception.LogicValidationException;
-import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
-import org.modelmapper.ModelMapper;
 import com.youcode.aftas.repository.CompetitionRepository;
+import com.youcode.aftas.repository.HuntingRepository;
+import com.youcode.aftas.repository.RankingRepository;
 import com.youcode.aftas.service.ICompetitionService;
 import com.youcode.aftas.web.dto.read.CompetitionDto;
+import com.youcode.aftas.web.dto.read.RankingDto;
+import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class CompetitionService implements ICompetitionService {
     private final CompetitionRepository repository;
+    private final RankingRepository rankingRepository;
+    private final HuntingRepository huntingRepository;
     private final ModelMapper mapper;
 
     @Override
@@ -36,6 +45,16 @@ public class CompetitionService implements ICompetitionService {
                     return competitionDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<CompetitionDto> findOne(String code) {
+        Optional<Competition> optional = repository.findById(code);
+        return optional.map(element -> {
+            CompetitionDto competitionDto = mapper.map(element, CompetitionDto.class);
+            competitionDto.setStatus(calculateCompetitionStatus(element.getDate(), element.getStartTime(), element.getEndTime()));
+            return competitionDto;
+        });
     }
 
     @Override
@@ -60,6 +79,39 @@ public class CompetitionService implements ICompetitionService {
         Competition competition = mapper.map(storeCompetitionDto, Competition.class);
         Competition saved = repository.save(competition);
         return mapper.map(saved, CompetitionDto.class);
+    }
+
+    @Override
+    public List<RankingDto> calculateScore(String code) {
+        Optional<Competition> optionalCompetition = repository.findById(code);
+        if (optionalCompetition.isEmpty()) {
+            throw new DataBaseConstraintException("their is no competition with that code.");
+        }
+
+        List<Ranking> rankings = rankingRepository.findByCompetition(optionalCompetition.get());
+
+        List<Ranking> rankingsAfterCalcScore = rankings
+                .stream()
+                .peek(ranking -> {
+                    List<Hunting> userHunting = huntingRepository.findByCompetitionAndMember(ranking.getCompetition(), ranking.getMember());
+                    Integer huntScore = userHunting
+                            .stream()
+                            .map(hunting -> hunting.getFish().getLevel().getPoints() * hunting.getNumberOfFish())
+                            .mapToInt(Integer::intValue)
+                            .sum();
+
+                    ranking.setScore(huntScore);
+                })
+                .sorted(Comparator.comparingInt(Ranking::getScore).reversed())
+                .peek(ranking -> ranking.setRank(rankings.indexOf(ranking) + 1))
+                .toList();
+
+        rankingRepository.saveAll(rankings);
+
+        return rankingsAfterCalcScore
+                .stream()
+                .map((element) -> mapper.map(element, RankingDto.class))
+                .collect(Collectors.toList());
     }
 
     private Boolean codeMatchFormattedCode(String code, String location, LocalDate date) {

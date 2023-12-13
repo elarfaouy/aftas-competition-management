@@ -2,6 +2,7 @@ package com.youcode.aftas.domain.entity;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -22,9 +23,11 @@ public class Ranking {
     private Integer score;
 
     @ManyToOne
+    @JoinColumn(name = "code", insertable = false, updatable = false)
     private Competition competition;
 
     @ManyToOne
+    @JoinColumn(name = "num", insertable = false, updatable = false)
     private Member member;
 
     @Override
