@@ -7,6 +7,7 @@ import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class CompetitionRest {
     private final ICompetitionService service;
 
     @GetMapping
-    public List<CompetitionDto> getAll() {
-        return service.findAll();
+    public Page<CompetitionDto> getAll(@RequestParam int page, @RequestParam int size) {
+        return service.findAll(page, size);
     }
 
     @PostMapping
