@@ -1,6 +1,7 @@
 package com.youcode.aftas.service;
 
 import com.youcode.aftas.web.dto.read.CompetitionDto;
+import com.youcode.aftas.web.dto.read.RankingDto;
 import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +15,6 @@ public interface ICompetitionService {
     Optional<CompetitionDto> findOne(String code);
 
     CompetitionDto store(StoreCompetitionDto storeCompetitionDto);
+
+    List<RankingDto> calculateScore(String code);
 }
