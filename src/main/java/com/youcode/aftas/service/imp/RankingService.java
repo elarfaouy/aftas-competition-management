@@ -9,6 +9,7 @@ import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.repository.MemberRepository;
 import com.youcode.aftas.repository.RankingRepository;
 import com.youcode.aftas.service.IRankingService;
+import com.youcode.aftas.web.dto.read.RankingDto;
 import com.youcode.aftas.web.dto.store.StoreRankingDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -27,8 +29,11 @@ public class RankingService implements IRankingService {
     private final ModelMapper mapper;
 
     @Override
-    public List<Ranking> findAll() {
-        return repository.findAll();
+    public List<RankingDto> findAll() {
+        return repository
+                .findAll()
+                .stream().map((element) -> mapper.map(element, RankingDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override

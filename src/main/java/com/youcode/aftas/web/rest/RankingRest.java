@@ -1,7 +1,7 @@
 package com.youcode.aftas.web.rest;
 
-import com.youcode.aftas.domain.entity.Ranking;
 import com.youcode.aftas.service.IRankingService;
+import com.youcode.aftas.web.dto.read.RankingDto;
 import com.youcode.aftas.web.dto.store.StoreRankingDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class RankingRest {
     private final IRankingService service;
 
     @GetMapping
-    public List<Ranking> getAll() {
+    public List<RankingDto> getAll() {
         return service.findAll();
     }
 
