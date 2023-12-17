@@ -14,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -72,5 +74,19 @@ public class HuntingService implements IHuntingService {
             Hunting saved = repository.save(hunting);
             return mapper.map(saved, HuntingDto.class);
         }
+    }
+
+    @Override
+    public List<HuntingDto> findByCompetition(String code) {
+        Optional<Competition> optionalCompetition = competitionRepository.findById(code);
+        if (optionalCompetition.isEmpty()) {
+            throw new DataBaseConstraintException("their is no competition with that code.");
+        }
+
+        return repository
+                .findByCompetition(optionalCompetition.get())
+                .stream()
+                .map((element) -> mapper.map(element, HuntingDto.class))
+                .collect(Collectors.toList());
     }
 }

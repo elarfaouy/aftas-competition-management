@@ -8,9 +8,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +25,12 @@ public class CompetitionRest {
     @GetMapping
     public Page<CompetitionDto> getAll(@RequestParam int page, @RequestParam int size) {
         return service.findAll(page, size);
+    }
+
+    @GetMapping("/{code}")
+    public ResponseEntity<CompetitionDto> getOne(@PathVariable String code) {
+        Optional<CompetitionDto> competitionDto = service.findOne(code);
+        return competitionDto.map(dto -> ResponseEntity.ok().body(dto)).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
