@@ -12,13 +12,23 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class MemberService implements IMemberService {
     private final MemberRepository repository;
     private final ModelMapper mapper;
+
+    @Override
+    public List<MemberDto> findAll() {
+        return repository
+                .findAll()
+                .stream().map((element) -> mapper.map(element, MemberDto.class))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public MemberDto store(StoreMemberDto storeMemberDto) {
