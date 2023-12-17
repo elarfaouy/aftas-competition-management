@@ -39,7 +39,11 @@ public class CompetitionService implements ICompetitionService {
     @Override
     public Page<CompetitionDto> findAll(int page, int size) {
         Page<Competition> competitionPage = repository.findAll(PageRequest.of(page, size));
-        return competitionPage.map((element) -> mapper.map(element, CompetitionDto.class));
+        return competitionPage.map((element) -> {
+            CompetitionDto competitionDto = mapper.map(element, CompetitionDto.class);
+            competitionDto.setStatus(calculateCompetitionStatus(element.getDate(), element.getStartTime(), element.getEndTime()));
+            return competitionDto;
+        });
     }
 
     @Override
