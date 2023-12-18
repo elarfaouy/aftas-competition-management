@@ -102,14 +102,15 @@ public class CompetitionService implements ICompetitionService {
                     ranking.setScore(huntScore);
                 })
                 .sorted(Comparator.comparingInt(Ranking::getScore).reversed())
-                .peek(ranking -> ranking.setRank(rankings.indexOf(ranking) + 1))
                 .toList();
+
+        List<Ranking> finalRanking = rankingsAfterCalcScore.stream().peek(ranking -> ranking.setRank(rankingsAfterCalcScore.indexOf(ranking) + 1)).toList();
 
         rankingRepository.saveAll(rankings);
 
-        return rankingsAfterCalcScore
+        return finalRanking
                 .stream()
-                .map((element) -> mapper.map(element, RankingDto.class))
+                .map((element) -> RankingDto.builder().rank(element.getRank()).score(element.getScore()).build())
                 .collect(Collectors.toList());
     }
 
