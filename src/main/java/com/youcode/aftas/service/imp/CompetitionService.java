@@ -15,6 +15,8 @@ import com.youcode.aftas.web.dto.read.RankingDto;
 import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -35,16 +37,13 @@ public class CompetitionService implements ICompetitionService {
     private final ModelMapper mapper;
 
     @Override
-    public List<CompetitionDto> findAll() {
-        return repository
-                .findAll()
-                .stream()
-                .map((element) -> {
-                    CompetitionDto competitionDto = mapper.map(element, CompetitionDto.class);
-                    competitionDto.setStatus(calculateCompetitionStatus(element.getDate(), element.getStartTime(), element.getEndTime()));
-                    return competitionDto;
-                })
-                .collect(Collectors.toList());
+    public Page<CompetitionDto> findAll(int page, int size) {
+        Page<Competition> competitionPage = repository.findAll(PageRequest.of(page, size));
+        return competitionPage.map((element) -> {
+            CompetitionDto competitionDto = mapper.map(element, CompetitionDto.class);
+            competitionDto.setStatus(calculateCompetitionStatus(element.getDate(), element.getStartTime(), element.getEndTime()));
+            return competitionDto;
+        });
     }
 
     @Override
@@ -103,14 +102,15 @@ public class CompetitionService implements ICompetitionService {
                     ranking.setScore(huntScore);
                 })
                 .sorted(Comparator.comparingInt(Ranking::getScore).reversed())
-                .peek(ranking -> ranking.setRank(rankings.indexOf(ranking) + 1))
                 .toList();
+
+        List<Ranking> finalRanking = rankingsAfterCalcScore.stream().peek(ranking -> ranking.setRank(rankingsAfterCalcScore.indexOf(ranking) + 1)).toList();
 
         rankingRepository.saveAll(rankings);
 
-        return rankingsAfterCalcScore
+        return finalRanking
                 .stream()
-                .map((element) -> mapper.map(element, RankingDto.class))
+                .map((element) -> RankingDto.builder().rank(element.getRank()).score(element.getScore()).build())
                 .collect(Collectors.toList());
     }
 
