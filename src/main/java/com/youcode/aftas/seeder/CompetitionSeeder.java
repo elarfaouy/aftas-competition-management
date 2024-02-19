@@ -74,6 +74,8 @@ public class CompetitionSeeder implements CommandLineRunner {
         Permission writeRanking = Permission.builder().name("WRITE_RANKING").build();
         Permission readHunting = Permission.builder().name("READ_HUNTING").build();
         Permission writeHunting = Permission.builder().name("WRITE_HUNTING").build();
+        Permission readFish = Permission.builder().name("READ_FISH").build();
+        Permission writeLevel = Permission.builder().name("WRITE_LEVEL").build();
 
         permissionRepository.saveAll(List.of(readCompetition, writeCompetition, readMember, writeMember, readRanking, writeRanking, readHunting, writeHunting));
 
@@ -85,7 +87,9 @@ public class CompetitionSeeder implements CommandLineRunner {
                 "READ_RANKING", readRanking,
                 "WRITE_RANKING", writeRanking,
                 "READ_HUNTING", readHunting,
-                "WRITE_HUNTING", writeHunting
+                "WRITE_HUNTING", writeHunting,
+                "READ_FISH", readFish,
+                "WRITE_LEVEL", writeLevel
         );
 
         saveRoles();
@@ -100,21 +104,29 @@ public class CompetitionSeeder implements CommandLineRunner {
                 permissions.get("READ_RANKING"),
                 permissions.get("WRITE_RANKING"),
                 permissions.get("READ_HUNTING"),
-                permissions.get("WRITE_HUNTING")
+                permissions.get("WRITE_HUNTING"),
+                permissions.get("READ_FISH"),
+                permissions.get("WRITE_LEVEL")
         )).build();
 
         Role jury = Role.builder().name("JURY").permissions(List.of(
                 permissions.get("READ_COMPETITION"),
+                permissions.get("WRITE_COMPETITION"),
                 permissions.get("READ_MEMBER"),
                 permissions.get("READ_RANKING"),
-                permissions.get("READ_HUNTING")
+                permissions.get("WRITE_RANKING"),
+                permissions.get("READ_HUNTING"),
+                permissions.get("WRITE_HUNTING"),
+                permissions.get("READ_FISH"),
+                permissions.get("WRITE_LEVEL")
         )).build();
 
         Role adherent = Role.builder().name("ADHERENT").permissions(List.of(
                 permissions.get("READ_COMPETITION"),
                 permissions.get("READ_MEMBER"),
                 permissions.get("READ_RANKING"),
-                permissions.get("READ_HUNTING")
+                permissions.get("READ_HUNTING"),
+                permissions.get("READ_FISH")
         )).build();
 
         roleRepository.saveAll(List.of(manager, jury, adherent));
