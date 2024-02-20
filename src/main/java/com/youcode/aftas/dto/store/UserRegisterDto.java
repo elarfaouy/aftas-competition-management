@@ -33,6 +33,5 @@ public class UserRegisterDto implements Serializable {
     private String password;
 
     @NotNull(message = "role cannot be null.")
-    @NotBlank(message = "role cannot be blank.")
     private Role role;
 }

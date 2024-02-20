@@ -4,6 +4,8 @@ import com.youcode.aftas.domain.entity.Competition;
 import com.youcode.aftas.domain.entity.User;
 import com.youcode.aftas.domain.entity.Ranking;
 import com.youcode.aftas.domain.entity.RankingKey;
+import com.youcode.aftas.dto.payload.CompetitionDto;
+import com.youcode.aftas.dto.payload.MemberDto;
 import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.repository.MemberRepository;
@@ -32,7 +34,17 @@ public class RankingService implements IRankingService {
     public List<RankingDto> findAll() {
         return repository
                 .findAll()
-                .stream().map((element) -> mapper.map(element, RankingDto.class))
+                .stream()
+                .map((element) -> {
+                    MemberDto memberDto = mapper.map(element.getMember(), MemberDto.class);
+                    CompetitionDto competitionDto = mapper.map(element.getCompetition(), CompetitionDto.class);
+                    return RankingDto.builder()
+                            .rank(element.getRank())
+                            .score(element.getScore())
+                            .member(memberDto)
+                            .competition(competitionDto)
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

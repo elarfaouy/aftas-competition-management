@@ -1,5 +1,6 @@
 package com.youcode.aftas.service.imp;
 
+import com.youcode.aftas.domain.entity.Role;
 import com.youcode.aftas.domain.entity.User;
 import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.repository.MemberRepository;
@@ -9,6 +10,7 @@ import com.youcode.aftas.dto.store.StoreMemberDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class MemberService implements IMemberService {
     private final MemberRepository repository;
     private final ModelMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<MemberDto> findAll() {
@@ -40,6 +43,8 @@ public class MemberService implements IMemberService {
         try {
             User member = mapper.map(storeMemberDto, User.class);
             member.setAccessionDate(LocalDate.now());
+            member.setRole(Role.builder().id(3L).build());
+            member.setPassword(passwordEncoder.encode(member.getPassword()));
             User saved = repository.save(member);
             return mapper.map(saved, MemberDto.class);
         } catch (DataIntegrityViolationException e) {

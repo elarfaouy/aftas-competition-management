@@ -1,5 +1,6 @@
 package com.youcode.aftas.dto.store;
 
+import com.youcode.aftas.domain.entity.Role;
 import com.youcode.aftas.domain.enums.IdentityDocumentType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,4 +33,12 @@ public class StoreMemberDto implements Serializable {
     private String identityNumber;
 
     private IdentityDocumentType identityDocument;
+
+    @NotNull(message = "username cannot be null.")
+    @NotBlank(message = "username cannot be blank.")
+    private String username;
+
+    @NotNull(message = "password cannot be null.")
+    @NotBlank(message = "password cannot be blank.")
+    private String password;
 }

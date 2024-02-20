@@ -1,17 +1,18 @@
 package com.youcode.aftas.service.imp;
 
 import com.youcode.aftas.domain.entity.*;
+import com.youcode.aftas.dto.payload.RankingDto;
 import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.repository.HuntingRepository;
 import com.youcode.aftas.repository.RankingRepository;
-import com.youcode.aftas.dto.payload.RankingDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +82,8 @@ class CompetitionServiceTest {
     RankingRepository rankingRepository;
     @Mock
     HuntingRepository huntingRepository;
+    @Mock
+    ModelMapper mapper;
 
     @Test
     void throwExceptionForInvalidCompetition() {

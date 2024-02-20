@@ -9,6 +9,7 @@ import com.youcode.aftas.dto.store.UserLoginDto;
 import com.youcode.aftas.dto.store.UserRegisterDto;
 import com.youcode.aftas.service.IAuthenticationService;
 import com.youcode.aftas.service.ITokenService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,14 +26,14 @@ public class AuthenticationRest {
     private final ITokenService tokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationDto> register(@RequestBody UserRegisterDto user) {
+    public ResponseEntity<AuthenticationDto> register(@Valid @RequestBody UserRegisterDto user) {
         return ResponseEntity.ok(
                 authenticationService.register(user)
         );
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationDto> login(@RequestBody UserLoginDto user) {
+    public ResponseEntity<AuthenticationDto> login(@Valid @RequestBody UserLoginDto user) {
         return ResponseEntity.ok(
                 authenticationService.login(user)
         );

@@ -4,16 +4,16 @@ import com.youcode.aftas.domain.entity.Competition;
 import com.youcode.aftas.domain.entity.Hunting;
 import com.youcode.aftas.domain.entity.Ranking;
 import com.youcode.aftas.domain.enums.CompetitionStatus;
+import com.youcode.aftas.dto.payload.CompetitionDto;
+import com.youcode.aftas.dto.payload.MemberDto;
+import com.youcode.aftas.dto.payload.RankingDto;
+import com.youcode.aftas.dto.store.StoreCompetitionDto;
 import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.exception.LogicValidationException;
 import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.repository.HuntingRepository;
 import com.youcode.aftas.repository.RankingRepository;
 import com.youcode.aftas.service.ICompetitionService;
-import com.youcode.aftas.dto.payload.CompetitionDto;
-import com.youcode.aftas.dto.payload.MemberDto;
-import com.youcode.aftas.dto.payload.RankingDto;
-import com.youcode.aftas.dto.store.StoreCompetitionDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -112,13 +112,13 @@ public class CompetitionService implements ICompetitionService {
         return finalRanking
                 .stream()
                 .map((element) -> {
-                    MemberDto memberDto = new MemberDto();
-                    memberDto.setName(element.getMember().getName());
-                    memberDto.setFamilyName(element.getMember().getFamilyName());
+                    MemberDto memberDto = mapper.map(element.getMember(), MemberDto.class);
+                    CompetitionDto competitionDto = mapper.map(element.getCompetition(), CompetitionDto.class);
                     return RankingDto.builder()
                             .rank(element.getRank())
                             .score(element.getScore())
                             .member(memberDto)
+                            .competition(competitionDto)
                             .build();
                 })
                 .collect(Collectors.toList());

@@ -45,11 +45,11 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public AuthenticationDto login(UserLoginDto loginDto) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
-
         User userFromDb = userRepository
                 .findByUsername(loginDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
         Token refreshToken = tokenService.generateRefreshToken(userFromDb);
 
