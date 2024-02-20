@@ -1,6 +1,6 @@
 package com.youcode.aftas.service;
 
-import com.youcode.aftas.web.dto.read.FishDto;
+import com.youcode.aftas.dto.payload.FishDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

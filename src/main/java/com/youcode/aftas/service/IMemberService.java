@@ -1,7 +1,7 @@
 package com.youcode.aftas.service;
 
-import com.youcode.aftas.web.dto.read.MemberDto;
-import com.youcode.aftas.web.dto.store.StoreMemberDto;
+import com.youcode.aftas.dto.payload.MemberDto;
+import com.youcode.aftas.dto.store.StoreMemberDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

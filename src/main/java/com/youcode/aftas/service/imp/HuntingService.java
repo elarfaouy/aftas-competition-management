@@ -7,9 +7,9 @@ import com.youcode.aftas.exception.LogicValidationException;
 import com.youcode.aftas.repository.*;
 import com.youcode.aftas.service.ICompetitionService;
 import com.youcode.aftas.service.IHuntingService;
-import com.youcode.aftas.web.dto.read.CompetitionDto;
-import com.youcode.aftas.web.dto.read.HuntingDto;
-import com.youcode.aftas.web.dto.store.StoreHuntingDto;
+import com.youcode.aftas.dto.payload.CompetitionDto;
+import com.youcode.aftas.dto.payload.HuntingDto;
+import com.youcode.aftas.dto.store.StoreHuntingDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ public class HuntingService implements IHuntingService {
             throw new DataBaseConstraintException("their is no competition with that code.");
         }
 
-        Optional<Member> optionalMember = memberRepository.findById(storeHuntingDto.getMember().getNum());
+        Optional<User> optionalMember = memberRepository.findById(storeHuntingDto.getMember().getNum());
         if (optionalMember.isEmpty()) {
             throw new DataBaseConstraintException("their is no member with that number.");
         }

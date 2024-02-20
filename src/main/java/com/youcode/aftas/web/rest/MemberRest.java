@@ -1,11 +1,10 @@
 package com.youcode.aftas.web.rest;
 
+import com.youcode.aftas.dto.payload.MemberDto;
+import com.youcode.aftas.dto.store.StoreMemberDto;
 import com.youcode.aftas.service.IMemberService;
-import com.youcode.aftas.web.dto.read.MemberDto;
-import com.youcode.aftas.web.dto.store.StoreMemberDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,16 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
 public class MemberRest {
-    @Qualifier("memberService")
-    private final IMemberService service;
+    private final IMemberService memberService;
 
     @GetMapping
-    public List<MemberDto> getAll(){
-        return service.findAll();
+    public List<MemberDto> getAll() {
+        return memberService.findAll();
     }
 
     @PostMapping
-    public MemberDto save(@Valid @RequestBody StoreMemberDto storeMemberDto){
-        return service.store(storeMemberDto);
+    public MemberDto save(@Valid @RequestBody StoreMemberDto storeMemberDto) {
+        return memberService.store(storeMemberDto);
     }
 }

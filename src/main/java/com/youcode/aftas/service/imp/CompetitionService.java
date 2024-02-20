@@ -10,9 +10,10 @@ import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.repository.HuntingRepository;
 import com.youcode.aftas.repository.RankingRepository;
 import com.youcode.aftas.service.ICompetitionService;
-import com.youcode.aftas.web.dto.read.CompetitionDto;
-import com.youcode.aftas.web.dto.read.RankingDto;
-import com.youcode.aftas.web.dto.store.StoreCompetitionDto;
+import com.youcode.aftas.dto.payload.CompetitionDto;
+import com.youcode.aftas.dto.payload.MemberDto;
+import com.youcode.aftas.dto.payload.RankingDto;
+import com.youcode.aftas.dto.store.StoreCompetitionDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -110,7 +111,16 @@ public class CompetitionService implements ICompetitionService {
 
         return finalRanking
                 .stream()
-                .map((element) -> RankingDto.builder().rank(element.getRank()).score(element.getScore()).build())
+                .map((element) -> {
+                    MemberDto memberDto = new MemberDto();
+                    memberDto.setName(element.getMember().getName());
+                    memberDto.setFamilyName(element.getMember().getFamilyName());
+                    return RankingDto.builder()
+                            .rank(element.getRank())
+                            .score(element.getScore())
+                            .member(memberDto)
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

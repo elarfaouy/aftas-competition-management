@@ -2,7 +2,7 @@ package com.youcode.aftas.service.imp;
 
 import com.youcode.aftas.repository.FishRepository;
 import com.youcode.aftas.service.IFishService;
-import com.youcode.aftas.web.dto.read.FishDto;
+import com.youcode.aftas.dto.payload.FishDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

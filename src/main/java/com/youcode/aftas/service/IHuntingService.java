@@ -1,7 +1,7 @@
 package com.youcode.aftas.service;
 
-import com.youcode.aftas.web.dto.read.HuntingDto;
-import com.youcode.aftas.web.dto.store.StoreHuntingDto;
+import com.youcode.aftas.dto.payload.HuntingDto;
+import com.youcode.aftas.dto.store.StoreHuntingDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

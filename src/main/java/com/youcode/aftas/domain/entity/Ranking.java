@@ -10,9 +10,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Ranking {
     @EmbeddedId
     private RankingKey id;
@@ -25,5 +25,5 @@ public class Ranking {
 
     @ManyToOne
     @JoinColumn(name = "num", insertable = false, updatable = false)
-    private Member member;
+    private User member;
 }

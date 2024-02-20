@@ -9,9 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

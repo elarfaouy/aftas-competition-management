@@ -13,9 +13,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Competition {
     @Id
     private String code;

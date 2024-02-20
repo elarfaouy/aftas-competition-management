@@ -1,7 +1,7 @@
 package com.youcode.aftas.service.imp;
 
 import com.youcode.aftas.domain.entity.Competition;
-import com.youcode.aftas.domain.entity.Member;
+import com.youcode.aftas.domain.entity.User;
 import com.youcode.aftas.domain.entity.Ranking;
 import com.youcode.aftas.domain.entity.RankingKey;
 import com.youcode.aftas.exception.DataBaseConstraintException;
@@ -9,8 +9,8 @@ import com.youcode.aftas.repository.CompetitionRepository;
 import com.youcode.aftas.repository.MemberRepository;
 import com.youcode.aftas.repository.RankingRepository;
 import com.youcode.aftas.service.IRankingService;
-import com.youcode.aftas.web.dto.read.RankingDto;
-import com.youcode.aftas.web.dto.store.StoreRankingDto;
+import com.youcode.aftas.dto.payload.RankingDto;
+import com.youcode.aftas.dto.store.StoreRankingDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -43,7 +43,7 @@ public class RankingService implements IRankingService {
             throw new DataBaseConstraintException("their is no competition with that code.");
         }
 
-        Optional<Member> optionalMember = memberRepository.findById(storeRankingDto.getMember().getNum());
+        Optional<User> optionalMember = memberRepository.findById(storeRankingDto.getMember().getNum());
         if (optionalMember.isEmpty()) {
             throw new DataBaseConstraintException("their is no member with that number.");
         }

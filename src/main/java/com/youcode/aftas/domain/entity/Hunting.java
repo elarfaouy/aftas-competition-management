@@ -7,9 +7,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Hunting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Hunting {
     private Fish fish;
 
     @ManyToOne
-    private Member member;
+    private User member;
 
     @ManyToOne
     private Competition competition;

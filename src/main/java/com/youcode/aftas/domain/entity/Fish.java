@@ -12,9 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Fish {
     @Id
     private String name;

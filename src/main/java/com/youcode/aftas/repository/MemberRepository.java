@@ -1,7 +1,9 @@
 package com.youcode.aftas.repository;
 
-import com.youcode.aftas.domain.entity.Member;
+import com.youcode.aftas.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MemberRepository extends JpaRepository<Member, Integer> {
+@Repository
+public interface MemberRepository extends JpaRepository<User, Integer> {
 }
