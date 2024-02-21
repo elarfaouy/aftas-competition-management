@@ -77,7 +77,7 @@ public class CompetitionSeeder implements CommandLineRunner {
         Permission readFish = Permission.builder().name("READ_FISH").build();
         Permission writeLevel = Permission.builder().name("WRITE_LEVEL").build();
 
-        permissionRepository.saveAll(List.of(readCompetition, writeCompetition, readMember, writeMember, readRanking, writeRanking, readHunting, writeHunting));
+        permissionRepository.saveAll(List.of(readCompetition, writeCompetition, readMember, writeMember, readRanking, writeRanking, readHunting, writeHunting, readFish, writeLevel));
 
         permissions = Map.of(
                 "READ_COMPETITION", readCompetition,
@@ -125,7 +125,6 @@ public class CompetitionSeeder implements CommandLineRunner {
                 permissions.get("READ_COMPETITION"),
                 permissions.get("READ_MEMBER"),
                 permissions.get("READ_RANKING"),
-                permissions.get("READ_HUNTING"),
                 permissions.get("READ_FISH")
         )).build();
 

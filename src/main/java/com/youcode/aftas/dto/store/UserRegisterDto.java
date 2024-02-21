@@ -1,6 +1,5 @@
 package com.youcode.aftas.dto.store;
 
-import com.youcode.aftas.domain.entity.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -31,7 +30,4 @@ public class UserRegisterDto implements Serializable {
     @NotNull(message = "password cannot be null.")
     @NotBlank(message = "password cannot be blank.")
     private String password;
-
-    @NotNull(message = "role cannot be null.")
-    private Role role;
 }

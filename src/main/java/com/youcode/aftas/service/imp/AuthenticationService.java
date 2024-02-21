@@ -1,5 +1,6 @@
 package com.youcode.aftas.service.imp;
 
+import com.youcode.aftas.domain.entity.Role;
 import com.youcode.aftas.domain.entity.Token;
 import com.youcode.aftas.domain.entity.User;
 import com.youcode.aftas.dto.payload.AuthenticationDto;
@@ -29,6 +30,7 @@ public class AuthenticationService implements IAuthenticationService {
         registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
         User user = modelMapper.map(registerDto, User.class);
+        user.setRole(Role.builder().id(3L).build());
 
         User saved = userRepository.save(user);
 

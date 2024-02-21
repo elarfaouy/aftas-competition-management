@@ -52,6 +52,9 @@ public class AuthenticationRest {
         if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof User user) {
             return ResponseEntity.ok(
                     UserDto.builder()
+                            .num(user.getNum())
+                            .name(user.getName())
+                            .familyName(user.getFamilyName())
                             .username(user.getUsername())
                             .password(user.getPassword())
                             .role(user.getRole().getName())
@@ -79,7 +82,7 @@ public class AuthenticationRest {
             );
         }
 
-        return ResponseEntity.ok(
+        return ResponseEntity.badRequest().body(
                 Map.of("message", "You are not logged in")
         );
     }
