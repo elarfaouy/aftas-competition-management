@@ -3,6 +3,7 @@ package com.youcode.aftas.service.imp;
 import com.youcode.aftas.domain.entity.Token;
 import com.youcode.aftas.domain.entity.User;
 import com.youcode.aftas.dto.payload.AuthenticationDto;
+import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.repository.TokenRepository;
 import com.youcode.aftas.service.ITokenService;
 import io.jsonwebtoken.Claims;
@@ -123,14 +124,14 @@ public class TokenService implements ITokenService {
     @Override
     public AuthenticationDto generateNewAccessToken(String refreshToken) {
         Token token = tokenRepository.findByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(() -> new DataBaseConstraintException("Invalid refresh token"));
 
         if (token.getRevoked()) {
-            throw new RuntimeException("Refresh token has been revoked");
+            throw new DataBaseConstraintException("Refresh token has been revoked");
         }
 
         if (token.getExpiryDate().isBefore(Instant.now())) {
-            throw new RuntimeException("Refresh token has expired");
+            throw new DataBaseConstraintException("Refresh token has expired");
         }
 
         User user = token.getUser();

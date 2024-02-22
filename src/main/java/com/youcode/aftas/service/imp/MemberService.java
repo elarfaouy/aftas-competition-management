@@ -2,6 +2,7 @@ package com.youcode.aftas.service.imp;
 
 import com.youcode.aftas.domain.entity.Role;
 import com.youcode.aftas.domain.entity.User;
+import com.youcode.aftas.dto.update.UpdateUserDto;
 import com.youcode.aftas.exception.DataBaseConstraintException;
 import com.youcode.aftas.repository.MemberRepository;
 import com.youcode.aftas.service.IMemberService;
@@ -50,5 +51,16 @@ public class MemberService implements IMemberService {
         } catch (DataIntegrityViolationException e) {
             throw new DataBaseConstraintException("error when save member, identity number must be unique");
         }
+    }
+
+    @Override
+    public MemberDto update(UpdateUserDto updateUserDto) {
+        User user = repository.findById(updateUserDto.getNum()).orElseThrow(
+                () -> new DataBaseConstraintException("member not found.")
+        );
+
+        user.setRole(updateUserDto.getRole());
+        User updated = repository.save(user);
+        return mapper.map(updated, MemberDto.class);
     }
 }
